@@ -39,20 +39,19 @@ typedef struct
 typedef struct
 {
 	int clientsCnt;
-	ModbusClient clientsList[MAX_CLIENT_NUM];
+	ModbusClient clients[MAX_CLIENT_NUM];
 } ModbusClientsList;
 
 typedef struct
 {
 	int clientId;
-	uint16_t clientData[MAX_RCV_DATA_LEN];
+	uint16_t data[MAX_RCV_DATA_LEN];
 } ModbusClientData;
 
 typedef struct
 {
-	ModbusClientData clientsDataList[MAX_CLIENT_NUM];
+	ModbusClientData clients[MAX_CLIENT_NUM];
 } ModbusClientsDataList;
-
 
 ModbusError modbusInit(ModbusClientsList *pClientsList);
 ModbusError modbusReceiveData(ModbusClientsDataList *pDataList);
