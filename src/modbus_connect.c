@@ -10,9 +10,6 @@
 
 #define MODBUS_DEBUG 1
 
-#define COMMAND_BUF_SIZE 16 // svv delete
-#define RCV_BUF_SIZE 100    // svv delete
-
 /*
 #define LOG_MSG(msg) log_msg(msg, __FUNCTION__, __LINE__)
 #define ERR_MSG(msg) err_msg(msg, __FUNCTION__, __LINE__)
@@ -51,7 +48,8 @@ ModbusError modbusInit(ModbusClientsList *pClientsList)
 		return MBE_CLIENT;
 	}
 
-	printf("Find %d clients\n", pClientsList->clientsCnt);
+	if(MODBUS_DEBUG)
+		printf("Find %d clients\n", pClientsList->clientsCnt);
 
 	// Save clients data in _clientsList
 	memcpy(&_clientsList, pClientsList, sizeof(ModbusClientsList));
@@ -92,9 +90,10 @@ ModbusError modbusInit(ModbusClientsList *pClientsList)
 		_clientsList.clients[clientNum].connected = true;
 		atLeastOne = true;
 
-		printf("Connected to ip: %s, port: %d\n", 
-				_clientsList.clients[clientNum].ipAdress,
-				_clientsList.clients[clientNum].port);
+		if(MODBUS_DEBUG)
+			printf("Connected to ip: %s, port: %d\n", 
+					_clientsList.clients[clientNum].ipAdress,
+					_clientsList.clients[clientNum].port);
 	}
 
 	// Check status

@@ -55,6 +55,7 @@ typedef struct
 
 ModbusError modbusInit(ModbusClientsList *pClientsList);
 ModbusError modbusReceiveData(ModbusClientsDataList *pDataList);
+ModbusError modbusReconnect();
 void        modbusDeinit();
 
 
