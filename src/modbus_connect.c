@@ -73,7 +73,7 @@ ModbusError modbusInit(ModbusClientsList *pClientsList)
 
 			return MBE_CONTEXT;
 		}
-
+		
 		// Connect
 		if (modbus_connect(_clientsList.clients[clientNum].context) == -1) 
 		{
@@ -169,16 +169,18 @@ ModbusError modbusReconnect()
 	int  clientNum;
 	bool atLeastOne = false;
 	ModbusError mbStatus = MBE_OK;
+	int rc;
+	uint16_t data[MAX_RCV_DATA_LEN];
 
 	for(clientNum = 0; clientNum < _clientsList.clientsCnt; clientNum++)
 	{
 		if(_clientsList.clients[clientNum].connected == false)
-		{
+		{	
 			// Client not connected
 			if(_clientsList.clients[clientNum].context != NULL)	
 			{
-				modbus_close(_clientsList.clients[clientNum].context);	
-				modbus_free(_clientsList.clients[clientNum].context);	
+				// modbus_close(_clientsList.clients[clientNum].context); Segmentation fault
+				// modbus_free(_clientsList.clients[clientNum].context);  Segmentation fault
 
 				// Get context
 				_clientsList.clients[clientNum].context = modbus_new_tcp(_clientsList.clients[clientNum].ipAdress, 
@@ -192,7 +194,7 @@ ModbusError modbusReconnect()
 
 					return MBE_CONTEXT;
 				}
-
+ 
 				// Connect
 				if (modbus_connect(_clientsList.clients[clientNum].context) == -1) 
 				{
@@ -206,6 +208,7 @@ ModbusError modbusReconnect()
 
 				modbus_set_slave(_clientsList.clients[clientNum].context, _clientsList.clients[clientNum].id);	
 
+				_clientsList.clients[clientNum].connected = true;
 			}
 			else
 			{
